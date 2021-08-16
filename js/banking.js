@@ -41,11 +41,15 @@ function getInputValue(inputId) {
 document.getElementById('deposit-button').addEventListener('click', function () {
     const depositAmount = getInputValue('deposit-input');
     //console.log(depositAmount);
-    const totalDepositAmount = updateTotal('deposit-total', depositAmount);
 
-    const currentBalance = getCurrentBalance();
+    if (depositAmount > 0) {
+        const totalDepositAmount = updateTotal('deposit-total', depositAmount);
 
-    const totalBalance = updateBalance(depositAmount, true);
+        const currentBalance = getCurrentBalance();
+
+        const totalBalance = updateBalance(depositAmount, true);
+    }
+
 });
 
 
@@ -53,9 +57,12 @@ document.getElementById('deposit-button').addEventListener('click', function () 
 document.getElementById('withdraw-button').addEventListener('click', function () {
     const withdrawAmount = getInputValue('withdraw-input');
     //console.log(withdrawAmount);
-    const totalwithdrawAmount = updateTotal('withdraw-total', withdrawAmount);
 
     const currentBalance = getCurrentBalance();
-
-    const totalBalance = updateBalance(withdrawAmount, false);
+    if (withdrawAmount > 0 && withdrawAmount < currentBalance) {
+        const totalwithdrawAmount = updateTotal('withdraw-total', withdrawAmount);
+        const totalBalance = updateBalance(withdrawAmount, false);
+    } else if (withdrawAmount > currentBalance) {
+        alert("you can't withdraw more money than your current balance");
+    }
 });
